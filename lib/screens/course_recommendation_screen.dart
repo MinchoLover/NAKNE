@@ -65,7 +65,6 @@ class _CourseRecommendationScreenState
               recommendationDescription: _courseRecommendationDescription(
                 course,
               ),
-              protectionLabel: '보호 기준 반영',
               onTap: () => _openDetail(context, course),
             ),
             const SizedBox(height: 14),
@@ -179,7 +178,7 @@ class _MoodTagPanel extends StatelessWidget {
           const SizedBox(height: 10),
           if (selectedMoodTags.isEmpty)
             const Text(
-              '감성 태그를 선택하면 추천 설명이 더 개인화돼요.',
+              '감성 태그 없이 기본 추천을 보여드려요.',
               style: TextStyle(color: AppColors.textSecondary, height: 1.4),
             )
           else

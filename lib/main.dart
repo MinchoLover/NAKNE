@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import 'data/dummy_data.dart';
-import 'screens/home_screen.dart';
+import 'screens/mood_diagnosis_screen.dart';
 import 'theme/app_colors.dart';
 
 void main() {
@@ -26,7 +26,7 @@ class LocalSwitchPohangApp extends StatelessWidget {
         scaffoldBackgroundColor: AppColors.background,
         useMaterial3: true,
       ),
-      home: const HomeScreen(),
+      home: const MoodDiagnosisScreen(),
     );
   }
 }
