@@ -17,15 +17,16 @@ class PlaceStepCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
         color: AppColors.card,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: AppColors.border),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.06),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
+            color: AppColors.deepBlue.withValues(alpha: 0.05),
+            blurRadius: 20,
+            offset: const Offset(0, 10),
           ),
         ],
       ),
@@ -35,8 +36,8 @@ class PlaceStepCard extends StatelessWidget {
           Column(
             children: [
               CircleAvatar(
-                radius: 18,
-                backgroundColor: AppColors.primary,
+                radius: 19,
+                backgroundColor: AppColors.deepBlue,
                 foregroundColor: Colors.white,
                 child: Text(
                   '$stepNumber',
@@ -44,7 +45,11 @@ class PlaceStepCard extends StatelessWidget {
                 ),
               ),
               const SizedBox(height: 10),
-              Icon(_iconForType(place.type), color: AppColors.secondary),
+              Icon(
+                _iconForType(place.type),
+                color: AppColors.secondary,
+                size: 22,
+              ),
             ],
           ),
           const SizedBox(width: 14),
@@ -58,7 +63,7 @@ class PlaceStepCard extends StatelessWidget {
                     Expanded(
                       child: Text(
                         place.name,
-                        maxLines: 2,
+                        maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: Theme.of(context).textTheme.titleMedium
                             ?.copyWith(

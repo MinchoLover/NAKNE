@@ -21,12 +21,13 @@ class LocalBalanceSlider extends StatelessWidget {
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
         color: AppColors.card,
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(28),
+        border: Border.all(color: AppColors.border),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.07),
-            blurRadius: 22,
-            offset: const Offset(0, 10),
+            color: AppColors.deepBlue.withValues(alpha: 0.08),
+            blurRadius: 26,
+            offset: const Offset(0, 12),
           ),
         ],
       ),
@@ -42,6 +43,7 @@ class LocalBalanceSlider extends StatelessWidget {
                   style: Theme.of(context).textTheme.titleLarge?.copyWith(
                     color: AppColors.textPrimary,
                     fontWeight: FontWeight.w900,
+                    height: 1.16,
                   ),
                 ),
               ),
@@ -51,18 +53,27 @@ class LocalBalanceSlider extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           const Text(
-            '대표 관광지 중심으로 가볍게 볼지, 로컬 생활권까지 깊게 들어갈지 조정해보세요.',
+            '대표 관광지를 가볍게 볼지, 시장·항구 생활권까지 깊게 들어갈지 조정해보세요.',
             style: TextStyle(color: AppColors.textSecondary, height: 1.42),
           ),
-          const SizedBox(height: 14),
-          Slider(
-            value: value.clamp(0.0, 100.0),
-            min: 0,
-            max: 100,
-            divisions: 100,
-            activeColor: AppColors.primary,
-            inactiveColor: AppColors.softBlue,
-            onChanged: onChanged,
+          const SizedBox(height: 18),
+          SliderTheme(
+            data: SliderTheme.of(context).copyWith(
+              trackHeight: 8,
+              thumbShape: const RoundSliderThumbShape(enabledThumbRadius: 11),
+              overlayShape: const RoundSliderOverlayShape(overlayRadius: 22),
+              activeTrackColor: AppColors.primary,
+              inactiveTrackColor: AppColors.softBlue,
+              thumbColor: Colors.white,
+              overlayColor: AppColors.primary.withValues(alpha: 0.12),
+            ),
+            child: Slider(
+              value: value.clamp(0.0, 100.0),
+              min: 0,
+              max: 100,
+              divisions: 100,
+              onChanged: onChanged,
+            ),
           ),
           const Row(
             children: [
@@ -91,15 +102,16 @@ class LocalBalanceSlider extends StatelessWidget {
             width: double.infinity,
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: AppColors.background,
+              color: AppColors.paleBlue,
               borderRadius: BorderRadius.circular(18),
+              border: Border.all(color: AppColors.border),
             ),
             child: Text(
               mode.description,
               style: const TextStyle(
                 color: AppColors.textPrimary,
                 height: 1.4,
-                fontWeight: FontWeight.w700,
+                fontWeight: FontWeight.w800,
               ),
             ),
           ),

@@ -21,6 +21,7 @@ class InfoPill extends StatelessWidget {
       decoration: BoxDecoration(
         color: backgroundColor ?? AppColors.softBlue,
         borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: AppColors.border),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -33,9 +34,9 @@ class InfoPill extends StatelessWidget {
               maxLines: 1,
               overflow: TextOverflow.ellipsis,
               style: const TextStyle(
-                color: AppColors.primary,
+                color: AppColors.deepBlue,
                 fontSize: 12,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
               ),
             ),
           ),

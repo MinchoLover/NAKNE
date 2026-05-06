@@ -24,19 +24,21 @@ class CourseCard extends StatelessWidget {
     return Material(
       color: AppColors.card,
       elevation: 0,
-      borderRadius: BorderRadius.circular(22),
+      borderRadius: BorderRadius.circular(26),
       child: InkWell(
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(26),
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.all(18),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(22),
+            color: AppColors.card,
+            borderRadius: BorderRadius.circular(26),
+            border: Border.all(color: AppColors.border),
             boxShadow: [
               BoxShadow(
-                color: AppColors.primary.withValues(alpha: 0.07),
-                blurRadius: 20,
-                offset: const Offset(0, 10),
+                color: AppColors.deepBlue.withValues(alpha: 0.06),
+                blurRadius: 24,
+                offset: const Offset(0, 12),
               ),
             ],
           ),
@@ -75,7 +77,7 @@ class CourseCard extends StatelessWidget {
                   DataBadge(
                     label: '${course.switchScore}점',
                     icon: Icons.auto_graph_rounded,
-                    backgroundColor: AppColors.primary,
+                    backgroundColor: AppColors.deepBlue,
                     foregroundColor: Colors.white,
                   ),
                 ],
@@ -122,10 +124,11 @@ class CourseCard extends StatelessWidget {
               const SizedBox(height: 12),
               Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(14),
                 decoration: BoxDecoration(
-                  color: AppColors.background,
-                  borderRadius: BorderRadius.circular(16),
+                  color: AppColors.paleBlue,
+                  borderRadius: BorderRadius.circular(18),
+                  border: Border.all(color: AppColors.border),
                 ),
                 child: Text(
                   recommendationDescription ?? course.reason,
@@ -137,11 +140,11 @@ class CourseCard extends StatelessWidget {
                   ),
                 ),
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 16),
               const Row(
                 children: [
                   Text(
-                    '이 코스 보기',
+                    '코스 자세히 보기',
                     style: TextStyle(
                       color: AppColors.primary,
                       fontWeight: FontWeight.w900,
@@ -150,7 +153,7 @@ class CourseCard extends StatelessWidget {
                   SizedBox(width: 4),
                   Icon(
                     Icons.arrow_forward_rounded,
-                    size: 18,
+                    size: 19,
                     color: AppColors.primary,
                   ),
                 ],

@@ -15,20 +15,21 @@ class SpotCard extends StatelessWidget {
     return Material(
       color: AppColors.card,
       elevation: 0,
-      shadowColor: AppColors.primary.withValues(alpha: 0.12),
-      borderRadius: BorderRadius.circular(22),
+      borderRadius: BorderRadius.circular(26),
       child: InkWell(
-        borderRadius: BorderRadius.circular(22),
+        borderRadius: BorderRadius.circular(26),
         onTap: onTap,
         child: Container(
-          padding: const EdgeInsets.all(18),
+          padding: const EdgeInsets.all(20),
           decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(22),
+            color: AppColors.card,
+            borderRadius: BorderRadius.circular(26),
+            border: Border.all(color: AppColors.border),
             boxShadow: [
               BoxShadow(
-                color: AppColors.primary.withValues(alpha: 0.07),
-                blurRadius: 20,
-                offset: const Offset(0, 10),
+                color: AppColors.deepBlue.withValues(alpha: 0.06),
+                blurRadius: 24,
+                offset: const Offset(0, 12),
               ),
             ],
           ),
@@ -51,12 +52,13 @@ class SpotCard extends StatelessWidget {
                       style: Theme.of(context).textTheme.titleLarge?.copyWith(
                         color: AppColors.textPrimary,
                         fontWeight: FontWeight.w900,
+                        height: 1.16,
                       ),
                     ),
                     const SizedBox(height: 8),
                     Text(
                       spot.description,
-                      maxLines: 3,
+                      maxLines: 2,
                       overflow: TextOverflow.ellipsis,
                       style: const TextStyle(
                         color: AppColors.textSecondary,
@@ -79,22 +81,39 @@ class SpotCard extends StatelessWidget {
                     const SizedBox(height: 14),
                     Row(
                       children: [
-                        const Icon(
-                          Icons.alt_route_rounded,
-                          color: AppColors.primary,
-                          size: 18,
-                        ),
-                        const SizedBox(width: 6),
-                        Expanded(
-                          child: Text(
-                            '로컬 전환 코스 ${spot.localSwitchCount}개',
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            style: const TextStyle(
-                              color: AppColors.primary,
-                              fontWeight: FontWeight.w900,
-                            ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 10,
+                            vertical: 7,
                           ),
+                          decoration: BoxDecoration(
+                            color: AppColors.paleBlue,
+                            borderRadius: BorderRadius.circular(999),
+                          ),
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              const Icon(
+                                Icons.alt_route_rounded,
+                                color: AppColors.primary,
+                                size: 16,
+                              ),
+                              const SizedBox(width: 5),
+                              Text(
+                                '${spot.localSwitchCount}개 전환 코스',
+                                style: const TextStyle(
+                                  color: AppColors.primary,
+                                  fontWeight: FontWeight.w900,
+                                  fontSize: 12,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        const Spacer(),
+                        const Icon(
+                          Icons.chevron_right_rounded,
+                          color: AppColors.textSecondary,
                         ),
                       ],
                     ),
@@ -103,20 +122,38 @@ class SpotCard extends StatelessWidget {
               ),
               const SizedBox(width: 14),
               Container(
-                width: 62,
-                height: 86,
+                width: 66,
+                height: 96,
                 decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(24),
+                  borderRadius: BorderRadius.circular(26),
                   gradient: const LinearGradient(
-                    colors: [AppColors.secondary, AppColors.primary],
+                    colors: [
+                      AppColors.skyBlue,
+                      AppColors.secondary,
+                      AppColors.primary,
+                    ],
                     begin: Alignment.topCenter,
                     end: Alignment.bottomCenter,
                   ),
                 ),
-                child: const Icon(
-                  Icons.waves_rounded,
-                  color: Colors.white,
-                  size: 30,
+                child: Stack(
+                  alignment: Alignment.center,
+                  children: [
+                    Positioned(
+                      right: -12,
+                      bottom: -8,
+                      child: Icon(
+                        Icons.waves_rounded,
+                        color: Colors.white.withValues(alpha: 0.26),
+                        size: 56,
+                      ),
+                    ),
+                    const Icon(
+                      Icons.route_rounded,
+                      color: Colors.white,
+                      size: 30,
+                    ),
+                  ],
                 ),
               ),
             ],

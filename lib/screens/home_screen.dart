@@ -26,7 +26,7 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 30),
             const SectionTitle(
               title: '지금 어디에 있나요?',
-              subtitle: '현재 머무는 대표 관광지를 선택하면 다음 로컬 동선으로 이어지는 코스를 추천합니다.',
+              subtitle: '현재 머무는 대표 관광지를 선택하면 주변 생활권으로 이어지는 전환 코스를 보여드려요.',
             ),
             const SizedBox(height: 16),
             for (final spot in touristSpots) ...[
@@ -129,14 +129,14 @@ class _HeroPanel extends StatelessWidget {
             runSpacing: 8,
             children: [
               DataBadge(
-                label: '혼잡 분산',
-                icon: Icons.groups_2_rounded,
+                label: '관광 흐름 전환',
+                icon: Icons.route_rounded,
                 backgroundColor: Colors.white,
                 foregroundColor: AppColors.primary,
               ),
               DataBadge(
-                label: '로컬상권 연결',
-                icon: Icons.storefront_rounded,
+                label: '혼잡 분산',
+                icon: Icons.groups_2_rounded,
                 backgroundColor: Colors.white,
                 foregroundColor: AppColors.primary,
               ),
