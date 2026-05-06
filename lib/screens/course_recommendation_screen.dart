@@ -183,7 +183,7 @@ class _SpotSummaryPanel extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           const Text(
-            '선택한 관광지 주변의 혼잡도 완화, 도보 접근성, 로컬상권 연결성을 기준으로 전환 코스를 추천했어요.',
+            '관광 흐름 분산, 도보 접근성, 로컬상권 연결성을 기준으로 전환 코스를 추천했어요.',
             style: TextStyle(color: AppColors.textSecondary, height: 1.45),
           ),
           const SizedBox(height: 16),

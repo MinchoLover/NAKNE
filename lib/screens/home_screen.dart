@@ -116,6 +116,8 @@ class _HeroPanel extends StatelessWidget {
           const SizedBox(height: 12),
           Text(
             '관광객 흐름을 주변 시장·항구·해안 생활권으로 전환합니다.',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: textTheme.bodyLarge?.copyWith(
               color: Colors.white.withValues(alpha: 0.9),
               height: 1.42,
@@ -198,7 +200,7 @@ class _TodayRecommendationCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  '영일대 방문객이 많은 시간대예요. 죽도시장·포항운하 방향으로 전환을 추천해요.',
+                  '영일대 방문 흐름이 집중되는 시간대예요. 죽도시장·포항운하 방향으로 로컬 전환을 추천합니다.',
                   maxLines: 3,
                   overflow: TextOverflow.ellipsis,
                   style: Theme.of(context).textTheme.bodyMedium?.copyWith(

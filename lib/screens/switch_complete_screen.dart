@@ -59,7 +59,7 @@ class SwitchCompleteScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             const Text(
-              '대표 관광지에서 주변 로컬 생활권으로 여행이 이어집니다.',
+              '대표 관광지에서 주변 로컬 생활권으로 여행 흐름이 이어집니다.',
               textAlign: TextAlign.center,
               style: TextStyle(color: AppColors.textSecondary, height: 1.45),
             ),
@@ -112,7 +112,7 @@ class SwitchCompleteScreen extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 28),
-            FilledButton.icon(
+            OutlinedButton.icon(
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   const SnackBar(content: Text('지도 연동은 추후 제공 예정입니다.')),
@@ -120,24 +120,24 @@ class SwitchCompleteScreen extends StatelessWidget {
               },
               icon: const Icon(Icons.map_rounded),
               label: const Text('지도 앱으로 이동하기'),
-              style: FilledButton.styleFrom(
+              style: OutlinedButton.styleFrom(
                 minimumSize: const Size.fromHeight(54),
+                foregroundColor: AppColors.primary,
+                side: const BorderSide(color: AppColors.primary),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18),
                 ),
               ),
             ),
             const SizedBox(height: 10),
-            OutlinedButton.icon(
+            FilledButton.icon(
               onPressed: () {
                 Navigator.of(context).popUntil((route) => route.isFirst);
               },
               icon: const Icon(Icons.home_rounded),
               label: const Text('홈으로 돌아가기'),
-              style: OutlinedButton.styleFrom(
+              style: FilledButton.styleFrom(
                 minimumSize: const Size.fromHeight(54),
-                foregroundColor: AppColors.primary,
-                side: const BorderSide(color: AppColors.primary),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18),
                 ),
