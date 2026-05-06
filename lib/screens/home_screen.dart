@@ -7,9 +7,19 @@ import '../widgets/data_badge.dart';
 import '../widgets/section_title.dart';
 import '../widgets/spot_card.dart';
 import 'course_recommendation_screen.dart';
+import 'proof_dashboard_screen.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  final Set<String> _selectedMoodTags = {};
+
+  List<String> get _selectedMoodTagsList => _selectedMoodTags.toList();
 
   @override
   Widget build(BuildContext context) {
@@ -20,9 +30,16 @@ class HomeScreen extends StatelessWidget {
           children: [
             const _HeroPanel(),
             const SizedBox(height: 16),
+            _MoodCheckCard(
+              selectedTags: _selectedMoodTags,
+              onToggle: _toggleMoodTag,
+            ),
+            const SizedBox(height: 16),
             const _TodayRecommendationCard(),
             const SizedBox(height: 16),
             const _MetricRow(),
+            const SizedBox(height: 16),
+            const _ProofDashboardEntry(),
             const SizedBox(height: 30),
             const SectionTitle(
               title: '지금 어디에 있나요?',
@@ -42,10 +59,23 @@ class HomeScreen extends StatelessWidget {
     );
   }
 
+  void _toggleMoodTag(String tag) {
+    setState(() {
+      if (_selectedMoodTags.contains(tag)) {
+        _selectedMoodTags.remove(tag);
+      } else {
+        _selectedMoodTags.add(tag);
+      }
+    });
+  }
+
   void _openRecommendation(BuildContext context, TouristSpot spot) {
     Navigator.of(context).push(
       MaterialPageRoute<void>(
-        builder: (_) => CourseRecommendationScreen(spot: spot),
+        builder: (_) => CourseRecommendationScreen(
+          spot: spot,
+          selectedMoodTags: _selectedMoodTagsList,
+        ),
       ),
     );
   }
@@ -92,7 +122,7 @@ class _HeroPanel extends StatelessWidget {
               const SizedBox(width: 12),
               const Expanded(
                 child: Text(
-                  'Local Switch Pohang',
+                  '나그네',
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
@@ -103,6 +133,12 @@ class _HeroPanel extends StatelessWidget {
                 ),
               ),
             ],
+          ),
+          const SizedBox(height: 10),
+          const DataBadge(
+            label: 'Local Switch Pohang',
+            backgroundColor: Colors.white,
+            foregroundColor: AppColors.primary,
           ),
           const SizedBox(height: 26),
           Text(
@@ -143,6 +179,180 @@ class _HeroPanel extends StatelessWidget {
             ],
           ),
         ],
+      ),
+    );
+  }
+}
+
+class _MoodCheckCard extends StatelessWidget {
+  const _MoodCheckCard({required this.selectedTags, required this.onToggle});
+
+  final Set<String> selectedTags;
+  final ValueChanged<String> onToggle;
+
+  static const _questions = [
+    ('오늘은 바다를 오래 보고 싶나요?', '바다산책', Icons.waves_rounded),
+    ('시장 먹거리와 상권을 둘러보고 싶나요?', '시장먹거리', Icons.storefront_rounded),
+    ('오래된 골목·노포 분위기가 좋나요?', '노포감성', Icons.store_mall_directory_rounded),
+    ('저녁이나 야경 산책 코스가 끌리나요?', '야경산책', Icons.nights_stay_rounded),
+    ('로컬 생활권을 더 깊게 보고 싶나요?', '로컬중심', Icons.explore_rounded),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20),
+      decoration: BoxDecoration(
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(26),
+        border: Border.all(color: AppColors.border),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.deepBlue.withValues(alpha: 0.06),
+            blurRadius: 22,
+            offset: const Offset(0, 10),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const SectionTitle(
+            title: '오늘의 여행 감성',
+            subtitle: '5초만 선택하면 추천 화면에서 감성 태그로 반영돼요.',
+          ),
+          const SizedBox(height: 14),
+          for (final question in _questions) ...[
+            _MoodChoiceRow(
+              question: question.$1,
+              tag: question.$2,
+              icon: question.$3,
+              selected: selectedTags.contains(question.$2),
+              onTap: () => onToggle(question.$2),
+            ),
+            const SizedBox(height: 8),
+          ],
+          if (selectedTags.isNotEmpty) ...[
+            const SizedBox(height: 8),
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                for (final tag in selectedTags)
+                  DataBadge(
+                    label: tag,
+                    icon: Icons.check_rounded,
+                    backgroundColor: AppColors.paleBlue,
+                    foregroundColor: AppColors.deepBlue,
+                  ),
+              ],
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+}
+
+class _MoodChoiceRow extends StatelessWidget {
+  const _MoodChoiceRow({
+    required this.question,
+    required this.tag,
+    required this.icon,
+    required this.selected,
+    required this.onTap,
+  });
+
+  final String question;
+  final String tag;
+  final IconData icon;
+  final bool selected;
+  final VoidCallback onTap;
+
+  @override
+  Widget build(BuildContext context) {
+    return InkWell(
+      borderRadius: BorderRadius.circular(16),
+      onTap: onTap,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        decoration: BoxDecoration(
+          color: selected ? AppColors.softBlue : AppColors.background,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: selected ? AppColors.primary : AppColors.border,
+          ),
+        ),
+        child: Row(
+          children: [
+            Icon(
+              icon,
+              color: selected ? AppColors.primary : AppColors.textSecondary,
+              size: 20,
+            ),
+            const SizedBox(width: 10),
+            Expanded(
+              child: Text(
+                question,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: const TextStyle(
+                  color: AppColors.textPrimary,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+            ),
+            const SizedBox(width: 8),
+            DataBadge(
+              label: tag,
+              backgroundColor: selected ? AppColors.primary : AppColors.card,
+              foregroundColor: selected ? Colors.white : AppColors.primary,
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _ProofDashboardEntry extends StatelessWidget {
+  const _ProofDashboardEntry();
+
+  @override
+  Widget build(BuildContext context) {
+    return Material(
+      color: AppColors.deepBlue,
+      borderRadius: BorderRadius.circular(24),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(24),
+        onTap: () {
+          Navigator.of(context).push(
+            MaterialPageRoute<void>(
+              builder: (_) => const ProofDashboardScreen(),
+            ),
+          );
+        },
+        child: const Padding(
+          padding: EdgeInsets.all(18),
+          child: Row(
+            children: [
+              Icon(Icons.bar_chart_rounded, color: Colors.white),
+              SizedBox(width: 12),
+              Expanded(
+                child: Text(
+                  '운영 지표 보기 · Proof Dashboard',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ),
+              Icon(Icons.chevron_right_rounded, color: Colors.white70),
+            ],
+          ),
+        ),
       ),
     );
   }
