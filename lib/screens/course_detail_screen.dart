@@ -6,6 +6,8 @@ import '../theme/app_colors.dart';
 import '../widgets/data_badge.dart';
 import '../widgets/info_pill.dart';
 import '../widgets/place_step_card.dart';
+import '../widgets/route_preview_card.dart';
+import '../widgets/score_indicator.dart';
 import '../widgets/section_title.dart';
 import 'switch_complete_screen.dart';
 
@@ -28,6 +30,8 @@ class CourseDetailScreen extends StatelessWidget {
         children: [
           _CourseHeader(course: course),
           const SizedBox(height: 16),
+          RoutePreviewCard(course: course),
+          const SizedBox(height: 16),
           _QuickInfo(course: course),
           const SizedBox(height: 26),
           const SectionTitle(title: '추천 이유'),
@@ -36,10 +40,10 @@ class CourseDetailScreen extends StatelessWidget {
           const SizedBox(height: 26),
           const SectionTitle(
             title: '데이터 기반 추천 근거',
-            subtitle: '혼잡 완화, 로컬상권 연결, 보행 접근성을 함께 반영했습니다.',
+            subtitle: '대표 관광지 이후의 흐름 전환 가능성을 점수로 정리했습니다.',
           ),
           const SizedBox(height: 14),
-          _MetricGrid(course: course),
+          _ScoreList(course: course),
           const SizedBox(height: 26),
           const SectionTitle(title: '방문 순서'),
           const SizedBox(height: 14),
@@ -204,14 +208,14 @@ class _ReasonCard extends StatelessWidget {
   }
 }
 
-class _MetricGrid extends StatelessWidget {
-  const _MetricGrid({required this.course});
+class _ScoreList extends StatelessWidget {
+  const _ScoreList({required this.course});
 
   final LocalCourse course;
 
   @override
   Widget build(BuildContext context) {
-    final metrics = [
+    final scores = [
       ('혼잡도 완화', course.congestionReliefScore, Icons.groups_2_rounded),
       ('로컬상권 연결', course.localBusinessScore, Icons.storefront_rounded),
       ('도보 접근성', course.walkingScore, Icons.directions_walk_rounded),
@@ -219,69 +223,13 @@ class _MetricGrid extends StatelessWidget {
       ('관광지 분산', course.dispersionScore, Icons.hub_rounded),
     ];
 
-    return Wrap(
-      spacing: 10,
-      runSpacing: 10,
+    return Column(
       children: [
-        for (final metric in metrics)
-          _MetricTile(label: metric.$1, score: metric.$2, icon: metric.$3),
-      ],
-    );
-  }
-}
-
-class _MetricTile extends StatelessWidget {
-  const _MetricTile({
-    required this.label,
-    required this.score,
-    required this.icon,
-  });
-
-  final String label;
-  final int score;
-  final IconData icon;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      width: 142,
-      padding: const EdgeInsets.all(14),
-      decoration: BoxDecoration(
-        color: AppColors.card,
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.06),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
-          ),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: AppColors.secondary, size: 20),
+        for (final score in scores) ...[
+          ScoreIndicator(label: score.$1, score: score.$2, icon: score.$3),
           const SizedBox(height: 10),
-          Text(
-            '$score',
-            style: const TextStyle(
-              color: AppColors.primary,
-              fontSize: 24,
-              fontWeight: FontWeight.w900,
-            ),
-          ),
-          Text(
-            label,
-            maxLines: 1,
-            overflow: TextOverflow.ellipsis,
-            style: const TextStyle(
-              color: AppColors.textPrimary,
-              fontSize: 12,
-              fontWeight: FontWeight.w800,
-            ),
-          ),
         ],
-      ),
+      ],
     );
   }
 }

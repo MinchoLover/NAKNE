@@ -6,10 +6,18 @@ import 'data_badge.dart';
 import 'info_pill.dart';
 
 class CourseCard extends StatelessWidget {
-  const CourseCard({super.key, required this.course, required this.onTap});
+  const CourseCard({
+    super.key,
+    required this.course,
+    required this.onTap,
+    this.recommendationLabel,
+    this.recommendationDescription,
+  });
 
   final LocalCourse course;
   final VoidCallback onTap;
+  final String? recommendationLabel;
+  final String? recommendationDescription;
 
   @override
   Widget build(BuildContext context) {
@@ -39,15 +47,28 @@ class CourseCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Expanded(
-                    child: Text(
-                      course.title,
-                      maxLines: 2,
-                      overflow: TextOverflow.ellipsis,
-                      style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        color: AppColors.textPrimary,
-                        fontWeight: FontWeight.w900,
-                        height: 1.22,
-                      ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        if (recommendationLabel != null) ...[
+                          DataBadge(
+                            label: recommendationLabel!,
+                            icon: Icons.tune_rounded,
+                          ),
+                          const SizedBox(height: 9),
+                        ],
+                        Text(
+                          course.title,
+                          maxLines: 2,
+                          overflow: TextOverflow.ellipsis,
+                          style: Theme.of(context).textTheme.titleLarge
+                              ?.copyWith(
+                                color: AppColors.textPrimary,
+                                fontWeight: FontWeight.w900,
+                                height: 1.22,
+                              ),
+                        ),
+                      ],
                     ),
                   ),
                   const SizedBox(width: 10),
@@ -107,7 +128,7 @@ class CourseCard extends StatelessWidget {
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: Text(
-                  course.reason,
+                  recommendationDescription ?? course.reason,
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                   style: const TextStyle(
