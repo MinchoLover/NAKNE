@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'data/dummy_data.dart';
 import 'screens/home_screen.dart';
+import 'theme/app_colors.dart';
 
 void main() {
   assert(() {
@@ -21,8 +22,8 @@ class LocalSwitchPohangApp extends StatelessWidget {
       title: 'Local Switch Pohang',
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: const Color(0xFF0077B6)),
-        scaffoldBackgroundColor: const Color(0xFFF5FAFF),
+        colorScheme: ColorScheme.fromSeed(seedColor: AppColors.primary),
+        scaffoldBackgroundColor: AppColors.background,
         useMaterial3: true,
       ),
       home: const HomeScreen(),

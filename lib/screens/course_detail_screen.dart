@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 
-import '../models/course_place.dart';
 import '../models/local_course.dart';
 import '../models/tourist_spot.dart';
+import '../theme/app_colors.dart';
+import '../widgets/data_badge.dart';
+import '../widgets/info_pill.dart';
+import '../widgets/place_step_card.dart';
 import '../widgets/section_title.dart';
 import 'switch_complete_screen.dart';
 
@@ -16,36 +19,33 @@ class CourseDetailScreen extends StatelessWidget {
   final TouristSpot spot;
   final LocalCourse course;
 
-  static const _blue = Color(0xFF0077B6);
-  static const _softBlue = Color(0xFFE3F2FD);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(title: Text(spot.name)),
       body: ListView(
-        padding: const EdgeInsets.fromLTRB(20, 8, 20, 112),
+        padding: const EdgeInsets.fromLTRB(20, 8, 20, 116),
         children: [
           _CourseHeader(course: course),
           const SizedBox(height: 16),
           _QuickInfo(course: course),
-          const SizedBox(height: 24),
+          const SizedBox(height: 26),
           const SectionTitle(title: '추천 이유'),
-          const SizedBox(height: 10),
+          const SizedBox(height: 12),
           _ReasonCard(reason: course.reason),
-          const SizedBox(height: 24),
+          const SizedBox(height: 26),
           const SectionTitle(
             title: '데이터 기반 추천 근거',
             subtitle: '혼잡 완화, 로컬상권 연결, 보행 접근성을 함께 반영했습니다.',
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
           _MetricGrid(course: course),
-          const SizedBox(height: 24),
+          const SizedBox(height: 26),
           const SectionTitle(title: '방문 순서'),
-          const SizedBox(height: 12),
+          const SizedBox(height: 14),
           for (var i = 0; i < course.places.length; i++) ...[
-            _PlaceStepTile(index: i + 1, place: course.places[i]),
-            const SizedBox(height: 10),
+            PlaceStepCard(place: course.places[i], stepNumber: i + 1),
+            const SizedBox(height: 12),
           ],
         ],
       ),
@@ -63,7 +63,7 @@ class CourseDetailScreen extends StatelessWidget {
           icon: const Icon(Icons.alt_route_rounded),
           label: const Text('이 코스로 전환하기'),
           style: FilledButton.styleFrom(
-            minimumSize: const Size.fromHeight(54),
+            minimumSize: const Size.fromHeight(56),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(18),
             ),
@@ -82,26 +82,32 @@ class _CourseHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(20),
+      padding: const EdgeInsets.all(22),
       decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(28),
         gradient: const LinearGradient(
-          colors: [Color(0xFF0077B6), Color(0xFF48CAE4)],
+          colors: [AppColors.primary, AppColors.secondary],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
-        borderRadius: BorderRadius.circular(26),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withValues(alpha: 0.18),
+            blurRadius: 26,
+            offset: const Offset(0, 14),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
-            'Local Switch 점수',
-            style: TextStyle(
-              color: Colors.white70,
-              fontWeight: FontWeight.w700,
-            ),
+          const DataBadge(
+            label: 'Local Switch 점수',
+            icon: Icons.auto_graph_rounded,
+            backgroundColor: Colors.white,
+            foregroundColor: AppColors.primary,
           ),
-          const SizedBox(height: 8),
+          const SizedBox(height: 14),
           Row(
             crossAxisAlignment: CrossAxisAlignment.end,
             children: [
@@ -118,7 +124,7 @@ class _CourseHeader extends StatelessWidget {
                   '점',
                   style: TextStyle(
                     color: Colors.white,
-                    fontWeight: FontWeight.w800,
+                    fontWeight: FontWeight.w900,
                   ),
                 ),
               ),
@@ -127,15 +133,19 @@ class _CourseHeader extends StatelessWidget {
           const SizedBox(height: 14),
           Text(
             course.title,
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               color: Colors.white,
               fontWeight: FontWeight.w900,
-              height: 1.25,
+              height: 1.22,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             course.summary,
+            maxLines: 3,
+            overflow: TextOverflow.ellipsis,
             style: const TextStyle(color: Colors.white, height: 1.42),
           ),
         ],
@@ -151,73 +161,17 @@ class _QuickInfo extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
+    return Wrap(
+      spacing: 8,
+      runSpacing: 8,
       children: [
-        Expanded(
-          child: _InfoCard(
-            icon: Icons.schedule_rounded,
-            label: '소요시간',
-            value: course.duration,
-          ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: _InfoCard(
-            icon: Icons.near_me_rounded,
-            label: '거리',
-            value: course.distance,
-          ),
-        ),
-        const SizedBox(width: 10),
-        Expanded(
-          child: _InfoCard(
-            icon: Icons.access_time_filled_rounded,
-            label: '추천 시간',
-            value: course.recommendedTime,
-          ),
+        InfoPill(icon: Icons.schedule_rounded, label: course.duration),
+        InfoPill(icon: Icons.near_me_rounded, label: course.distance),
+        InfoPill(
+          icon: Icons.access_time_filled_rounded,
+          label: course.recommendedTime,
         ),
       ],
-    );
-  }
-}
-
-class _InfoCard extends StatelessWidget {
-  const _InfoCard({
-    required this.icon,
-    required this.label,
-    required this.value,
-  });
-
-  final IconData icon;
-  final String label;
-  final String value;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      constraints: const BoxConstraints(minHeight: 118),
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: CourseDetailScreen._softBlue),
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Icon(icon, color: CourseDetailScreen._blue, size: 20),
-          const SizedBox(height: 10),
-          Text(
-            label,
-            style: const TextStyle(color: Colors.black54, fontSize: 12),
-          ),
-          const SizedBox(height: 4),
-          Text(
-            value,
-            style: const TextStyle(fontWeight: FontWeight.w900, height: 1.25),
-          ),
-        ],
-      ),
     );
   }
 }
@@ -232,11 +186,20 @@ class _ReasonCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(18),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColors.card,
         borderRadius: BorderRadius.circular(22),
-        border: Border.all(color: CourseDetailScreen._softBlue),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withValues(alpha: 0.06),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
-      child: Text(reason, style: const TextStyle(height: 1.5)),
+      child: Text(
+        reason,
+        style: const TextStyle(color: AppColors.textPrimary, height: 1.5),
+      ),
     );
   }
 }
@@ -249,11 +212,11 @@ class _MetricGrid extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final metrics = [
-      ('혼잡 완화', course.congestionReliefScore),
-      ('상권 연결', course.localBusinessScore),
-      ('도보 접근', course.walkingScore),
-      ('체류 확장', course.stayExtensionScore),
-      ('분산 효과', course.dispersionScore),
+      ('혼잡도 완화', course.congestionReliefScore, Icons.groups_2_rounded),
+      ('로컬상권 연결', course.localBusinessScore, Icons.storefront_rounded),
+      ('도보 접근성', course.walkingScore, Icons.directions_walk_rounded),
+      ('체류시간 증가', course.stayExtensionScore, Icons.more_time_rounded),
+      ('관광지 분산', course.dispersionScore, Icons.hub_rounded),
     ];
 
     return Wrap(
@@ -261,148 +224,63 @@ class _MetricGrid extends StatelessWidget {
       runSpacing: 10,
       children: [
         for (final metric in metrics)
-          _MetricTile(label: metric.$1, score: metric.$2),
+          _MetricTile(label: metric.$1, score: metric.$2, icon: metric.$3),
       ],
     );
   }
 }
 
 class _MetricTile extends StatelessWidget {
-  const _MetricTile({required this.label, required this.score});
+  const _MetricTile({
+    required this.label,
+    required this.score,
+    required this.icon,
+  });
 
   final String label;
   final int score;
+  final IconData icon;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: 104,
-      padding: const EdgeInsets.all(12),
+      width: 142,
+      padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(18),
-        border: Border.all(color: CourseDetailScreen._softBlue),
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.primary.withValues(alpha: 0.06),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+          ),
+        ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+          Icon(icon, color: AppColors.secondary, size: 20),
+          const SizedBox(height: 10),
           Text(
             '$score',
             style: const TextStyle(
-              color: CourseDetailScreen._blue,
-              fontSize: 22,
+              color: AppColors.primary,
+              fontSize: 24,
               fontWeight: FontWeight.w900,
             ),
           ),
           Text(
             label,
-            style: const TextStyle(fontSize: 12, fontWeight: FontWeight.w700),
-          ),
-        ],
-      ),
-    );
-  }
-}
-
-class _PlaceStepTile extends StatelessWidget {
-  const _PlaceStepTile({required this.index, required this.place});
-
-  final int index;
-  final CoursePlace place;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: CourseDetailScreen._softBlue),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          CircleAvatar(
-            radius: 17,
-            backgroundColor: CourseDetailScreen._blue,
-            foregroundColor: Colors.white,
-            child: Text(
-              '$index',
-              style: const TextStyle(fontWeight: FontWeight.w900),
-            ),
-          ),
-          const SizedBox(width: 12),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Wrap(
-                  spacing: 8,
-                  runSpacing: 6,
-                  crossAxisAlignment: WrapCrossAlignment.center,
-                  children: [
-                    Text(
-                      place.name,
-                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        fontWeight: FontWeight.w900,
-                      ),
-                    ),
-                    _TypePill(label: place.type),
-                  ],
-                ),
-                const SizedBox(height: 8),
-                Text(
-                  place.description,
-                  style: const TextStyle(color: Colors.black54, height: 1.4),
-                ),
-                const SizedBox(height: 8),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(
-                      Icons.timer_outlined,
-                      size: 16,
-                      color: CourseDetailScreen._blue,
-                    ),
-                    const SizedBox(width: 4),
-                    Text(
-                      place.stayTime,
-                      style: const TextStyle(
-                        color: CourseDetailScreen._blue,
-                        fontWeight: FontWeight.w800,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: const TextStyle(
+              color: AppColors.textPrimary,
+              fontSize: 12,
+              fontWeight: FontWeight.w800,
             ),
           ),
         ],
-      ),
-    );
-  }
-}
-
-class _TypePill extends StatelessWidget {
-  const _TypePill({required this.label});
-
-  final String label;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
-      decoration: BoxDecoration(
-        color: CourseDetailScreen._softBlue,
-        borderRadius: BorderRadius.circular(999),
-      ),
-      child: Text(
-        label,
-        style: const TextStyle(
-          color: CourseDetailScreen._blue,
-          fontSize: 12,
-          fontWeight: FontWeight.w800,
-        ),
       ),
     );
   }

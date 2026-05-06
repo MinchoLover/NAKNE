@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 
 import '../models/local_course.dart';
 import '../models/tourist_spot.dart';
+import '../theme/app_colors.dart';
+import '../widgets/data_badge.dart';
 
 class SwitchCompleteScreen extends StatelessWidget {
   const SwitchCompleteScreen({
@@ -13,57 +15,99 @@ class SwitchCompleteScreen extends StatelessWidget {
   final TouristSpot spot;
   final LocalCourse course;
 
-  static const _blue = Color(0xFF0077B6);
-  static const _softBlue = Color(0xFFE3F2FD);
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       body: SafeArea(
         child: ListView(
-          padding: const EdgeInsets.fromLTRB(24, 36, 24, 24),
+          padding: const EdgeInsets.fromLTRB(24, 36, 24, 28),
           children: [
-            const CircleAvatar(
-              radius: 42,
-              backgroundColor: _softBlue,
-              foregroundColor: _blue,
-              child: Icon(Icons.route_rounded, size: 42),
+            Center(
+              child: Container(
+                width: 92,
+                height: 92,
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    colors: [AppColors.secondary, AppColors.primary],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  borderRadius: BorderRadius.circular(32),
+                  boxShadow: [
+                    BoxShadow(
+                      color: AppColors.primary.withValues(alpha: 0.2),
+                      blurRadius: 24,
+                      offset: const Offset(0, 12),
+                    ),
+                  ],
+                ),
+                child: const Icon(
+                  Icons.check_rounded,
+                  color: Colors.white,
+                  size: 48,
+                ),
+              ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 26),
             Text(
               '로컬 동선이 시작됐어요',
               textAlign: TextAlign.center,
-              style: Theme.of(
-                context,
-              ).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.w900),
+              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+                color: AppColors.textPrimary,
+                fontWeight: FontWeight.w900,
+              ),
             ),
             const SizedBox(height: 10),
             const Text(
               '대표 관광지에서 주변 로컬 생활권으로 여행이 이어집니다.',
               textAlign: TextAlign.center,
-              style: TextStyle(color: Colors.black54, height: 1.45),
+              style: TextStyle(color: AppColors.textSecondary, height: 1.45),
             ),
             const SizedBox(height: 28),
             Container(
               padding: const EdgeInsets.all(20),
               decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: _softBlue),
+                color: AppColors.card,
+                borderRadius: BorderRadius.circular(26),
+                boxShadow: [
+                  BoxShadow(
+                    color: AppColors.primary.withValues(alpha: 0.07),
+                    blurRadius: 22,
+                    offset: const Offset(0, 10),
+                  ),
+                ],
               ),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
+                  const DataBadge(label: '전환 시작', icon: Icons.route_rounded),
+                  const SizedBox(height: 14),
                   Text(
                     course.title,
+                    maxLines: 2,
+                    overflow: TextOverflow.ellipsis,
                     style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: AppColors.textPrimary,
                       fontWeight: FontWeight.w900,
+                      height: 1.25,
                     ),
                   ),
-                  const SizedBox(height: 16),
-                  _SummaryRow(label: '출발 관광지', value: spot.name),
-                  _SummaryRow(label: '예상 소요시간', value: course.duration),
-                  _SummaryRow(label: '이동 거리', value: course.distance),
+                  const SizedBox(height: 18),
+                  _SummaryRow(
+                    icon: Icons.place_rounded,
+                    label: '출발 관광지',
+                    value: spot.name,
+                  ),
+                  _SummaryRow(
+                    icon: Icons.schedule_rounded,
+                    label: '예상 소요시간',
+                    value: course.duration,
+                  ),
+                  _SummaryRow(
+                    icon: Icons.near_me_rounded,
+                    label: '이동 거리',
+                    value: course.distance,
+                  ),
                 ],
               ),
             ),
@@ -77,7 +121,7 @@ class SwitchCompleteScreen extends StatelessWidget {
               icon: const Icon(Icons.map_rounded),
               label: const Text('지도 앱으로 이동하기'),
               style: FilledButton.styleFrom(
-                minimumSize: const Size.fromHeight(52),
+                minimumSize: const Size.fromHeight(54),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18),
                 ),
@@ -91,7 +135,9 @@ class SwitchCompleteScreen extends StatelessWidget {
               icon: const Icon(Icons.home_rounded),
               label: const Text('홈으로 돌아가기'),
               style: OutlinedButton.styleFrom(
-                minimumSize: const Size.fromHeight(52),
+                minimumSize: const Size.fromHeight(54),
+                foregroundColor: AppColors.primary,
+                side: const BorderSide(color: AppColors.primary),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(18),
                 ),
@@ -105,8 +151,13 @@ class SwitchCompleteScreen extends StatelessWidget {
 }
 
 class _SummaryRow extends StatelessWidget {
-  const _SummaryRow({required this.label, required this.value});
+  const _SummaryRow({
+    required this.icon,
+    required this.label,
+    required this.value,
+  });
 
+  final IconData icon;
   final String label;
   final String value;
 
@@ -117,14 +168,38 @@ class _SummaryRow extends StatelessWidget {
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          SizedBox(
-            width: 92,
-            child: Text(label, style: const TextStyle(color: Colors.black54)),
+          Container(
+            width: 34,
+            height: 34,
+            decoration: BoxDecoration(
+              color: AppColors.softBlue,
+              borderRadius: BorderRadius.circular(12),
+            ),
+            child: Icon(icon, color: AppColors.primary, size: 18),
           ),
+          const SizedBox(width: 10),
           Expanded(
-            child: Text(
-              value,
-              style: const TextStyle(fontWeight: FontWeight.w900),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  label,
+                  style: const TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 12,
+                  ),
+                ),
+                const SizedBox(height: 2),
+                Text(
+                  value,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: const TextStyle(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+              ],
             ),
           ),
         ],
