@@ -22,11 +22,12 @@ class ScoreIndicator extends StatelessWidget {
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
         color: AppColors.card,
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColors.border),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.05),
-            blurRadius: 16,
+            color: AppColors.deepBlue.withValues(alpha: 0.04),
+            blurRadius: 18,
             offset: const Offset(0, 8),
           ),
         ],
@@ -65,9 +66,9 @@ class ScoreIndicator extends StatelessWidget {
             borderRadius: BorderRadius.circular(999),
             child: LinearProgressIndicator(
               value: normalizedScore / 100,
-              minHeight: 8,
+              minHeight: 9,
               backgroundColor: AppColors.softBlue,
-              color: AppColors.primary,
+              color: AppColors.secondary,
             ),
           ),
         ],

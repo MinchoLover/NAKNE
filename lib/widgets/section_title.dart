@@ -30,7 +30,7 @@ class SectionTitle extends StatelessWidget {
                 style: textTheme.titleLarge?.copyWith(
                   color: AppColors.textPrimary,
                   fontWeight: FontWeight.w900,
-                  height: 1.2,
+                  height: 1.16,
                 ),
               ),
               if (subtitle != null) ...[
@@ -39,7 +39,7 @@ class SectionTitle extends StatelessWidget {
                   subtitle!,
                   style: textTheme.bodyMedium?.copyWith(
                     color: AppColors.textSecondary,
-                    height: 1.35,
+                    height: 1.38,
                   ),
                 ),
               ],

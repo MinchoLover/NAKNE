@@ -15,17 +15,17 @@ class RoutePreviewCard extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(20),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(24),
+        borderRadius: BorderRadius.circular(28),
         gradient: const LinearGradient(
-          colors: [AppColors.primary, AppColors.secondary],
+          colors: [AppColors.deepBlue, AppColors.primary, AppColors.secondary],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         boxShadow: [
           BoxShadow(
-            color: AppColors.primary.withValues(alpha: 0.16),
-            blurRadius: 24,
-            offset: const Offset(0, 12),
+            color: AppColors.deepBlue.withValues(alpha: 0.16),
+            blurRadius: 26,
+            offset: const Offset(0, 14),
           ),
         ],
       ),
@@ -42,6 +42,8 @@ class RoutePreviewCard extends StatelessWidget {
           const SizedBox(height: 6),
           const Text(
             '대표 관광지에서 로컬 생활권으로 이어지는 전환 흐름',
+            maxLines: 2,
+            overflow: TextOverflow.ellipsis,
             style: TextStyle(color: Colors.white70, height: 1.35),
           ),
           const SizedBox(height: 18),
@@ -50,6 +52,7 @@ class RoutePreviewCard extends StatelessWidget {
           else
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
+              padding: const EdgeInsets.only(right: 4),
               child: Row(
                 children: [
                   for (var i = 0; i < places.length; i++) ...[
@@ -74,11 +77,11 @@ class _RoutePoint extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      width: 78,
+      width: 84,
       child: Column(
         children: [
           CircleAvatar(
-            radius: 17,
+            radius: 18,
             backgroundColor: Colors.white,
             foregroundColor: AppColors.primary,
             child: Text(

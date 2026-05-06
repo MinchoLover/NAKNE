@@ -174,7 +174,7 @@ class _SpotSummaryPanel extends StatelessWidget {
           ),
           const SizedBox(height: 16),
           Text(
-            '근처 로컬 동선으로 전환해볼까요?',
+            '${spot.name}에서 어디로 이어갈까요?',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               color: AppColors.textPrimary,
               fontWeight: FontWeight.w900,
@@ -183,7 +183,7 @@ class _SpotSummaryPanel extends StatelessWidget {
           ),
           const SizedBox(height: 10),
           const Text(
-            '관광 흐름 분산, 도보 접근성, 로컬상권 연결성을 기준으로 전환 코스를 추천했어요.',
+            '관광 흐름 분산, 도보 접근성, 로컬상권 연결성을 함께 계산해 다음 동선을 추천했어요.',
             style: TextStyle(color: AppColors.textSecondary, height: 1.45),
           ),
           const SizedBox(height: 16),

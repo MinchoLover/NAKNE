@@ -40,7 +40,7 @@ class CourseDetailScreen extends StatelessWidget {
           const SizedBox(height: 26),
           const SectionTitle(
             title: '데이터 기반 추천 근거',
-            subtitle: '대표 관광지 이후의 흐름 전환 가능성을 점수로 정리했습니다.',
+            subtitle: '혼잡 분산, 상권 연결, 체류 확장 가능성을 한눈에 확인하세요.',
           ),
           const SizedBox(height: 14),
           _ScoreList(course: course),

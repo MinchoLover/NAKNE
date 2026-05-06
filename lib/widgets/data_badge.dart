@@ -22,10 +22,11 @@ class DataBadge extends StatelessWidget {
 
     return Container(
       constraints: const BoxConstraints(maxWidth: 190),
-      padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 7),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
         color: backgroundColor ?? AppColors.softBlue,
         borderRadius: BorderRadius.circular(999),
+        border: Border.all(color: foreground.withValues(alpha: 0.08)),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
@@ -42,7 +43,8 @@ class DataBadge extends StatelessWidget {
               style: TextStyle(
                 color: foreground,
                 fontSize: 12,
-                fontWeight: FontWeight.w800,
+                fontWeight: FontWeight.w700,
+                letterSpacing: 0,
               ),
             ),
           ),
