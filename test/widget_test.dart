@@ -7,6 +7,6 @@ void main() {
     await tester.pumpWidget(const LocalSwitchPohangApp());
 
     expect(find.text('Local Switch Pohang'), findsOneWidget);
-    expect(find.text('Pohang local experience MVP'), findsOneWidget);
+    expect(find.text('지금 어디에 있나요?'), findsOneWidget);
   });
 }
