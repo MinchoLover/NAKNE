@@ -12,12 +12,14 @@ class CourseCard extends StatelessWidget {
     required this.onTap,
     this.recommendationLabel,
     this.recommendationDescription,
+    this.protectionLabel,
   });
 
   final LocalCourse course;
   final VoidCallback onTap;
   final String? recommendationLabel;
   final String? recommendationDescription;
+  final String? protectionLabel;
 
   @override
   Widget build(BuildContext context) {
@@ -53,11 +55,24 @@ class CourseCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         if (recommendationLabel != null) ...[
-                          DataBadge(
-                            label: recommendationLabel!,
-                            icon: Icons.tune_rounded,
+                          Wrap(
+                            spacing: 7,
+                            runSpacing: 7,
+                            children: [
+                              DataBadge(
+                                label: recommendationLabel!,
+                                icon: Icons.tune_rounded,
+                              ),
+                              if (protectionLabel != null)
+                                DataBadge(
+                                  label: protectionLabel!,
+                                  icon: Icons.shield_rounded,
+                                  backgroundColor: AppColors.paleBlue,
+                                  foregroundColor: AppColors.deepBlue,
+                                ),
+                            ],
                           ),
-                          const SizedBox(height: 9),
+                          const SizedBox(height: 10),
                         ],
                         Text(
                           course.title,

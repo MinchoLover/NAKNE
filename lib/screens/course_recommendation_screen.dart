@@ -10,9 +10,14 @@ import '../widgets/section_title.dart';
 import 'course_detail_screen.dart';
 
 class CourseRecommendationScreen extends StatefulWidget {
-  const CourseRecommendationScreen({super.key, required this.spot});
+  const CourseRecommendationScreen({
+    super.key,
+    required this.spot,
+    this.selectedMoodTags = const [],
+  });
 
   final TouristSpot spot;
+  final List<String> selectedMoodTags;
 
   @override
   State<CourseRecommendationScreen> createState() =>
@@ -33,6 +38,8 @@ class _CourseRecommendationScreenState
         padding: const EdgeInsets.fromLTRB(20, 8, 20, 28),
         children: [
           _SpotSummaryPanel(spot: widget.spot),
+          const SizedBox(height: 16),
+          _MoodTagPanel(selectedMoodTags: widget.selectedMoodTags),
           const SizedBox(height: 16),
           LocalBalanceSlider(
             value: _localBalance,
@@ -58,6 +65,7 @@ class _CourseRecommendationScreenState
               recommendationDescription: _courseRecommendationDescription(
                 course,
               ),
+              protectionLabel: '보호 기준 반영',
               onTap: () => _openDetail(context, course),
             ),
             const SizedBox(height: 14),
@@ -92,13 +100,16 @@ class _CourseRecommendationScreenState
   }
 
   String _balanceRecommendationText() {
+    final moodText = widget.selectedMoodTags.isEmpty
+        ? ''
+        : ' ${widget.selectedMoodTags.take(2).join('·')} 감성도 함께 반영했어요.';
     if (_localBalance <= 30) {
-      return '짧은 이동과 쉬운 접근성을 기준으로 코스를 정렬했어요.';
+      return '짧은 이동과 쉬운 접근성을 기준으로 코스를 정렬했어요.$moodText';
     }
     if (_localBalance <= 65) {
-      return '관광지 편의성과 로컬상권 연결성을 함께 고려했어요.';
+      return '관광지 편의성과 로컬상권 연결성을 함께 고려했어요.$moodText';
     }
-    return '시장·항구·생활권 연결성이 높은 코스를 우선 추천했어요.';
+    return '시장·항구·생활권 연결성이 높은 코스를 우선 추천했어요.$moodText';
   }
 
   double _localPreferenceScore(LocalCourse course) {
@@ -136,6 +147,56 @@ class _CourseRecommendationScreenState
     Navigator.of(context).push(
       MaterialPageRoute<void>(
         builder: (_) => CourseDetailScreen(spot: widget.spot, course: course),
+      ),
+    );
+  }
+}
+
+class _MoodTagPanel extends StatelessWidget {
+  const _MoodTagPanel({required this.selectedMoodTags});
+
+  final List<String> selectedMoodTags;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Text(
+            '오늘의 감성 태그',
+            style: TextStyle(
+              color: AppColors.textPrimary,
+              fontWeight: FontWeight.w900,
+            ),
+          ),
+          const SizedBox(height: 10),
+          if (selectedMoodTags.isEmpty)
+            const Text(
+              '감성 태그를 선택하면 추천 설명이 더 개인화돼요.',
+              style: TextStyle(color: AppColors.textSecondary, height: 1.4),
+            )
+          else
+            Wrap(
+              spacing: 8,
+              runSpacing: 8,
+              children: [
+                for (final tag in selectedMoodTags)
+                  DataBadge(
+                    label: tag,
+                    icon: Icons.favorite_rounded,
+                    backgroundColor: AppColors.paleBlue,
+                    foregroundColor: AppColors.deepBlue,
+                  ),
+              ],
+            ),
+        ],
       ),
     );
   }

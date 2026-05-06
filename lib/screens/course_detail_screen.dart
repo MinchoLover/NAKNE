@@ -34,6 +34,10 @@ class CourseDetailScreen extends StatelessWidget {
           const SizedBox(height: 16),
           _QuickInfo(course: course),
           const SizedBox(height: 26),
+          const _LocalnessScoreCard(),
+          const SizedBox(height: 16),
+          const _ProtectionStandardCard(),
+          const SizedBox(height: 26),
           const SectionTitle(title: '추천 이유'),
           const SizedBox(height: 12),
           _ReasonCard(reason: course.reason),
@@ -73,6 +77,99 @@ class CourseDetailScreen extends StatelessWidget {
             ),
           ),
         ),
+      ),
+    );
+  }
+}
+
+class _LocalnessScoreCard extends StatelessWidget {
+  const _LocalnessScoreCard();
+
+  static const _items = [
+    ('P', '근접성'),
+    ('L', '생활권 장소성'),
+    ('A', '관광 집중 회피'),
+    ('S', '탐색 확장'),
+    ('T', '취향 적합도'),
+    ('E', '설명 가능성'),
+    ('R', '생활권 보호'),
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: AppColors.border),
+        boxShadow: [
+          BoxShadow(
+            color: AppColors.deepBlue.withValues(alpha: 0.05),
+            blurRadius: 18,
+            offset: const Offset(0, 8),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          const Row(
+            children: [
+              DataBadge(
+                label: 'Localness Score',
+                icon: Icons.psychology_rounded,
+              ),
+              SizedBox(width: 8),
+              DataBadge(label: 'P/L/A/S/T/E/R'),
+            ],
+          ),
+          const SizedBox(height: 12),
+          const Text(
+            '이 점수는 관광거점 이후 주변 생활권으로 이동이 전환될 가능성을 설명하는 기준입니다.',
+            style: TextStyle(color: AppColors.textSecondary, height: 1.4),
+          ),
+          const SizedBox(height: 12),
+          Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              for (final item in _items)
+                DataBadge(
+                  label: '${item.$1} ${item.$2}',
+                  backgroundColor: AppColors.paleBlue,
+                  foregroundColor: AppColors.deepBlue,
+                ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class _ProtectionStandardCard extends StatelessWidget {
+  const _ProtectionStandardCard();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        color: AppColors.paleBlue,
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: const Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          DataBadge(label: '보호 기준 반영', icon: Icons.shield_rounded),
+          SizedBox(height: 12),
+          Text(
+            '이 코스는 주거 밀집 골목, 항만 작업구역, 야간 소음 우려 구간을 피하는 방향으로 설계됐어요.',
+            style: TextStyle(color: AppColors.textPrimary, height: 1.45),
+          ),
+        ],
       ),
     );
   }
