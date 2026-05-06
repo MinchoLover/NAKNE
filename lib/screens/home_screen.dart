@@ -7,6 +7,7 @@ import '../widgets/data_badge.dart';
 import '../widgets/section_title.dart';
 import '../widgets/spot_card.dart';
 import 'course_recommendation_screen.dart';
+import 'proof_dashboard_screen.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key, this.selectedMoodTags = const []});
@@ -40,6 +41,8 @@ class HomeScreen extends StatelessWidget {
               ),
               const SizedBox(height: 14),
             ],
+            const SizedBox(height: 10),
+            const _ProofDashboardEntry(),
           ],
         ),
       ),
@@ -53,6 +56,62 @@ class HomeScreen extends StatelessWidget {
           spot: spot,
           selectedMoodTags: selectedMoodTags,
         ),
+      ),
+    );
+  }
+}
+
+class _ProofDashboardEntry extends StatelessWidget {
+  const _ProofDashboardEntry();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: AppColors.card,
+        borderRadius: BorderRadius.circular(22),
+        border: Border.all(color: AppColors.border),
+      ),
+      child: Row(
+        children: [
+          const Icon(Icons.bar_chart_rounded, color: AppColors.textSecondary),
+          const SizedBox(width: 12),
+          const Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  '운영 지표 보기',
+                  style: TextStyle(
+                    color: AppColors.textPrimary,
+                    fontWeight: FontWeight.w900,
+                  ),
+                ),
+                SizedBox(height: 2),
+                Text(
+                  'MVP 실증용 전환 퍼널 Mock',
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: AppColors.textSecondary,
+                    fontSize: 12,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute<void>(
+                  builder: (_) => const ProofDashboardScreen(),
+                ),
+              );
+            },
+            child: const Text('열기'),
+          ),
+        ],
       ),
     );
   }
